@@ -1,0 +1,40 @@
+*, ::before, ::after {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.choose-vs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.player-vs-player {
+    background-color: red;
+}
+
+.player-vs-computer {
+    background-color: green;
+}
+
+.container {
+    max-height: 1000px;
+    max-width: 2000px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.first-grid, .second-grid {
+    display: grid;
+    grid-template-columns: repeat(1fr, 10);
+    grid-template-rows: repeat(1fr, 10);
+}
+

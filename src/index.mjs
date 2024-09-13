@@ -77,7 +77,7 @@ export class Gameboard {
 export class Player {
     constructor() {
         this.gameboard = new Gameboard()
-        this.isReal = false
+        this.isReal = true
     }
 }
 
