@@ -20,11 +20,15 @@ export class Ship {
 export class Gameboard {
     constructor() {
         this.grid = Array(100).fill(null)
+        this.ships = []
         this.shot = []
+        this.missed = []
+        this.allSunk = false
     }
 
     placeShip(letter, number, direction, length) {
         const ship = new Ship(length, direction)
+        this.ships.push(ship)
         const index = getIndex(letter, number)
         this.grid[index] = ship
         if (direction === 'horizontal') {
@@ -49,20 +53,37 @@ export class Gameboard {
         if (this.grid[index] !== null) {
             if (typeof this.grid[index] === 'number') {
                 ship = this.grid[this.grid[index]]
-                ship.hit()
             } else {
                 ship = this.grid[index]
-                ship.hit()
             }
+            ship.hit()
+            ship.isSunk()
+        } else if (this.grid[index] === null) {
+            this.missed.push(index)
         }
+        this.checkAllSunk()
+    }
+
+    checkAllSunk() {
+        this.ships.forEach((ship) => {
+            if (!ship.sunk) {
+                return
+            }
+        })
+        this.allSunk = true
     }
 }
 
-export class Player {}
+export class Player {
+    constructor() {
+        this.gameboard = new Gameboard()
+        this.isReal = false
+    }
+}
 
 export function getIndex(letter, number) {
-    const columnIndex = letter.charCodeAt(0) - 'A'.charCodeAt(0)
-    const rowIndex = number - 1
+    const rowIndex = letter.charCodeAt(0) - 'A'.charCodeAt(0)
+    const columnIndex = number - 1
     const index = rowIndex * 10 + columnIndex
     return index
 }
