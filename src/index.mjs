@@ -1,23 +1,24 @@
-export class Ship {
-    constructor(length, direction) {
-        this.length = length
-        this.direction = direction
-        this.hits = 0
-        this.sunk = false
+import { changeCellBg } from "./dom.mjs"
+
+export class GameState {
+    constructor() {
+        this.players = []
+        this.currentTurn = 'second'
     }
 
-    hit() {
-        this.hits = this.hits + 1
-    }
-
-    isSunk() {
-        if (this.length === this.hits) {
-            this.sunk = true
-        }
+    switchTurn() {
+        this.currentTurn = this.currentTurn === 'first' ? 'second' : 'first'
     }
 }
 
-export class Gameboard {
+export class Player {
+    constructor() {
+        this.gameboard = new Gameboard()
+        this.isReal = true
+    }
+}
+
+class Gameboard {
     constructor() {
         this.grid = Array(100).fill(null)
         this.ships = []
@@ -42,12 +43,17 @@ export class Gameboard {
         }
     }
 
-    receiveAttack(letter, number) {
+    receiveAttack(arg1, arg2 = null) {
         let ship
-        const index = getIndex(letter, number)
-        if (this.shot.includes(index)) {
-            return
+        let index
+        
+        if (arg2 === null) {
+            index = arg1
         } else {
+            index = getIndex(arg1, arg2)
+        }
+        
+        if (!this.shot.includes(index)) {
             this.shot.push(index)
         }
         if (this.grid[index] !== null) {
@@ -57,7 +63,7 @@ export class Gameboard {
                 ship = this.grid[index]
             }
             ship.hit()
-            ship.isSunk()
+            ship.checkSunk()
         } else if (this.grid[index] === null) {
             this.missed.push(index)
         }
@@ -74,14 +80,37 @@ export class Gameboard {
     }
 }
 
-export class Player {
-    constructor() {
-        this.gameboard = new Gameboard()
-        this.isReal = true
+class Ship {
+    constructor(length, direction) {
+        this.length = length
+        this.direction = direction
+        this.hits = 0
+        this.sunk = false
+    }
+
+    hit() {
+        this.hits = this.hits + 1
+    }
+
+    checkSunk() {
+        if (this.length === this.hits) {
+            this.sunk = true
+        }
     }
 }
 
-export function getIndex(letter, number) {
+export function computerPlay(gameState, gridList) {
+    let randomIndex
+    do {
+        randomIndex = Math.floor(Math.random() * 100);
+    } while (gameState.players[0].gameboard.shot.includes(randomIndex));
+
+    gameState.players[0].gameboard.receiveAttack(randomIndex)
+    changeCellBg(gridList, randomIndex)
+    gameState.switchTurn()
+}
+
+function getIndex(letter, number) {
     const rowIndex = letter.charCodeAt(0) - 'A'.charCodeAt(0)
     const columnIndex = number - 1
     const index = rowIndex * 10 + columnIndex
