@@ -1,5 +1,5 @@
 import { Player, computerPlay } from './index.mjs'
-import { gameState, $, $$, showDialog, hideDialog, createGrid, displayGrid, changeCellBg } from './dom.mjs'
+import { gameState, $, $$, showDialog, hideDialog, createGrid, displayGrid, changeCellBg, endGame } from './dom.mjs'
 
 export function addDialogListeners() {
     const playerVsPlayer = $('.player-vs-player')
@@ -40,16 +40,25 @@ export function handleCellClick(turn, attackedPlayer, cellIndex) {
         console.log('It is not your turn.')
         return
     }
+
+    if (attackedPlayer.gameboard.shot.includes(cellIndex)) {
+        return
+    }
     
     const firstGridList = $$('.first-grid > div')
     const secondGridList = $$('.second-grid > div')
 
     attackedPlayer.gameboard.receiveAttack(cellIndex)
-    const gridList = gameState.currentTurn === 'first' ? firstGridList : secondGridList
+    const gridList = gameState.currentTurn === 'second' ? firstGridList : secondGridList
     changeCellBg(gridList, cellIndex)
 
+    //console.log(attackedPlayer, attackedPlayer.gameboard.allSunk)
+    if (attackedPlayer.gameboard.allSunk === true) {
+        endGame(gameState)
+    }
+
     gameState.switchTurn()
-    if (gameState.currentTurn === 'first' && gameState.players[1].isReal === false) {
-        computerPlay(gameState, firstGridList)
+    if (gameState.currentTurn === 'second' && gameState.players[1].isReal === false) {
+        setTimeout(computerPlay, 500, gameState, firstGridList)
     }
 }

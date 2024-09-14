@@ -3,7 +3,7 @@ import { changeCellBg } from "./dom.mjs"
 export class GameState {
     constructor() {
         this.players = []
-        this.currentTurn = 'second'
+        this.currentTurn = 'first'
     }
 
     switchTurn() {
@@ -71,12 +71,15 @@ class Gameboard {
     }
 
     checkAllSunk() {
+        let bool = true
         this.ships.forEach((ship) => {
             if (!ship.sunk) {
-                return
+                bool = false
             }
         })
-        this.allSunk = true
+        if (bool) {
+            this.allSunk = true
+        }
     }
 }
 

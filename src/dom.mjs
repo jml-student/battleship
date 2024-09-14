@@ -46,8 +46,8 @@ export function createGrid(firstPlayer, secondPlayer) {
         firstCell.dataset.index = i;
         secondCell.dataset.index = i;
 
-        firstCell.addEventListener('click', () => handleCellClick('first', firstPlayer, i))
-        secondCell.addEventListener('click', () => handleCellClick('second', secondPlayer, i))
+        firstCell.addEventListener('click', () => handleCellClick('second', firstPlayer, i))
+        secondCell.addEventListener('click', () => handleCellClick('first', secondPlayer, i))
 
         firstGrid.appendChild(firstCell)
         secondGrid.appendChild(secondCell)
@@ -80,4 +80,18 @@ export function changeCellBg(gridList, index) {
     } else if (gridList[index].style.backgroundColor === 'white') {
         gridList[index].style.backgroundColor = 'gray'
     }
+}
+
+export function endGame(gameState) {
+    const title = $('.title')
+    if (gameState.currentTurn === 'first') {
+        title.textContent = 'First Player Wins!'
+    } else {
+        if (gameState.players[1].isReal) {
+            title.textContent = 'Second Player Wins!'
+        } else {
+            title.textContent = 'Computer Wins!'
+        }
+    }
+    setTimeout(init, 2000)
 }
