@@ -1,9 +1,10 @@
 import { GameState } from './index.mjs'
-import { addDialogListeners, handleCellClick } from './events.mjs'
+import { addDialogListeners, addShipListeners, handleCellClick, handleDrop } from './events.mjs'
 
 function init() {
     showDialog()
     addDialogListeners()
+    addShipListeners()
 }
 init()
 
@@ -48,6 +49,9 @@ export function createGrid(firstPlayer, secondPlayer) {
 
         firstCell.addEventListener('click', () => handleCellClick('second', firstPlayer, i))
         secondCell.addEventListener('click', () => handleCellClick('first', secondPlayer, i))
+
+        firstCell.addEventListener('drop', handleDrop)
+        secondCell.addEventListener('drop', handleDrop)
 
         firstGrid.appendChild(firstCell)
         secondGrid.appendChild(secondCell)
@@ -95,3 +99,4 @@ export function endGame(gameState) {
     }
     setTimeout(init, 2000)
 }
+

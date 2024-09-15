@@ -28,7 +28,13 @@ export function addDialogListeners() {
 }
 
 export function addShipListeners() {
-    const ships = $$('')
+    const ships = $$('.ships img')
+    ships.forEach((ship) => {
+        ship.addEventListener('dragstart', handleDragStart)
+    })
+    ships.forEach((ship) => {
+        ship.addEventListener('dragend', handleDragEnd)
+    })
 }
 
 //temporal function to display some ships 
@@ -64,4 +70,18 @@ export function handleCellClick(turn, attackedPlayer, cellIndex) {
     if (gameState.currentTurn === 'second' && gameState.players[1].isReal === false) {
         setTimeout(computerPlay, 500, gameState, firstGridList)
     }
+}
+
+let draggedElement = null
+
+function handleDragStart(event) {
+    draggedElement = event.target
+}
+
+function handleDragEnd(event) {
+    draggedElement = null
+}
+
+export function handleDrop(event) {
+    event.preventDefault()
 }
