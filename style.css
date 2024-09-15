@@ -1,3 +1,12 @@
+:root {
+    --ship-height: 40px;
+    --ship1-height: calc(var(--ship-height) * 6);
+    --ship2-height: calc(var(--ship-height) * 5);
+    --ship3-height: calc(var(--ship-height) * 4);
+    --ship4-height: calc(var(--ship-height) * 3);
+
+}
+
 *, ::before, ::after {
     margin: 0;
     padding: 0;
@@ -7,7 +16,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 500px;
+    height: 1000px;
 }
 
 .choose-vs {
@@ -24,23 +33,33 @@ body {
     background-color: green;
 }
 
-.container {
+.grids {
     padding: 20px;
     background-color: rgb(245, 245, 245);
     border-radius: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 400px;
 }
 
 .first-grid, .second-grid {
     display: grid;
-    grid-template-columns: repeat(10, 20px);
-    grid-template-rows: repeat(10, 20px);
+    grid-template-columns: repeat(10,40px);
+    grid-template-rows: repeat(10, 40px);
     margin: 20px;
 }
 
 .cell {
     border: 1px solid black;
 }
+
+.ships {
+    background-color: rgb(247, 247, 247);
+
+    & img {
+        height: var(--height)
+    }
+}
+
 

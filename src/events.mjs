@@ -27,6 +27,10 @@ export function addDialogListeners() {
     })
 }
 
+export function addShipListeners() {
+    const ships = $$('')
+}
+
 //temporal function to display some ships 
 export function defaultShips(firstPlayer, secondPlayer) {
     firstPlayer.gameboard.placeShip('A', 1, 'vertical', 3)
@@ -52,7 +56,6 @@ export function handleCellClick(turn, attackedPlayer, cellIndex) {
     const gridList = gameState.currentTurn === 'second' ? firstGridList : secondGridList
     changeCellBg(gridList, cellIndex)
 
-    //console.log(attackedPlayer, attackedPlayer.gameboard.allSunk)
     if (attackedPlayer.gameboard.allSunk === true) {
         endGame(gameState)
     }
