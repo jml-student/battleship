@@ -75,7 +75,12 @@ export function handleCellClick(turn, attackedPlayer, cellIndex) {
 let draggedElement = null
 
 function handleDragStart(event) {
+    event.dataTransfer.setData('text/plain', '');
     draggedElement = event.target
+}
+
+export function handleDragOver(event) {
+    event.preventDefault()
 }
 
 function handleDragEnd(event) {
@@ -84,4 +89,11 @@ function handleDragEnd(event) {
 
 export function handleDrop(event) {
     event.preventDefault()
+
+    if (draggedElement) {
+        let clonedImg = draggedElement.cloneNode(true)
+        clonedImg.classList = 'cell-img'
+        event.target.appendChild(clonedImg);
+        draggedElement = null;
+    }
 }

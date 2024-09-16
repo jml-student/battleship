@@ -56,9 +56,13 @@ body {
 
 .ships {
     background-color: rgb(247, 247, 247);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     & img {
-        height: var(--height)
+        height: var(--height);
+        cursor: move;
     }
 }
 
