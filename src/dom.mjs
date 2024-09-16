@@ -1,5 +1,5 @@
 import { GameState } from './index.mjs'
-import { addDialogListeners, addShipListeners, handleCellClick, handleDragOver, handleDrop } from './events.mjs'
+import { addDialogListeners, addShipListeners, handleCellClick, handleDragOver, handleDragLeave, handleDrop } from './events.mjs'
 
 function init() {
     showDialog()
@@ -52,6 +52,9 @@ export function createGrid(firstPlayer, secondPlayer) {
 
         firstCell.addEventListener('dragover', handleDragOver)
         secondCell.addEventListener('dragover', handleDragOver)
+
+        firstCell.addEventListener('dragleave', handleDragLeave)
+        secondCell.addEventListener('dragleave', handleDragLeave)
 
         firstCell.addEventListener('drop', handleDrop)
         secondCell.addEventListener('drop', handleDrop)

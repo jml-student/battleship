@@ -11,7 +11,6 @@ export function addDialogListeners() {
         gameState.players.push(firstPlayer, secondPlayer)
         hideDialog()
         createGrid(firstPlayer, secondPlayer)
-        defaultShips(firstPlayer, secondPlayer)
         displayGrid(firstPlayer, secondPlayer)
     })
 
@@ -22,7 +21,6 @@ export function addDialogListeners() {
         gameState.players.push(firstPlayer, secondPlayer)
         hideDialog()
         createGrid(firstPlayer, secondPlayer)
-        defaultShips(firstPlayer, secondPlayer)
         displayGrid(firstPlayer, secondPlayer)
     })
 }
@@ -35,14 +33,6 @@ export function addShipListeners() {
     ships.forEach((ship) => {
         ship.addEventListener('dragend', handleDragEnd)
     })
-}
-
-//temporal function to display some ships 
-export function defaultShips(firstPlayer, secondPlayer) {
-    firstPlayer.gameboard.placeShip('A', 1, 'vertical', 3)
-    firstPlayer.gameboard.placeShip('E', 1, 'horizontal', 5)
-    secondPlayer.gameboard.placeShip('A', 3, 'vertical', 3)
-    secondPlayer.gameboard.placeShip('G', 1, 'horizontal', 5)
 }
 
 export function handleCellClick(turn, attackedPlayer, cellIndex) {
@@ -81,10 +71,51 @@ function handleDragStart(event) {
 
 export function handleDragOver(event) {
     event.preventDefault()
+    let index = event.target.dataset.index
+    let gridList = getGridList(event.target)
+    let cellsIndex = getCellsIndex(index)
+    cellsIndex.forEach((cell) => {
+        if (cell >= 0 && cell <= 99) {
+            gridList[cell].classList.add('drag-preview')
+        }
+    })
+}
+
+export function handleDragLeave(event) {
+    event.preventDefault()
+    let index = event.target.dataset.index
+    let gridList = getGridList(event.target)
+    let cellsIndex = getCellsIndex(index)
+    cellsIndex.forEach((cell) => {
+        if (cell >= 0 && cell <= 99) {
+            gridList[cell].classList.remove('drag-preview')
+        }
+    })
+    
 }
 
 function handleDragEnd(event) {
     draggedElement = null
+}
+
+function getCellsIndex(index) {
+    if (draggedElement.id === 'ship1') {
+        return [index - 20, index - 10, index, index + 10, index + 20, index + 30]
+    } else if (draggedElement.id === 'ship2') {
+        return [index - 20, index - 10, index, index + 10, index + 20]
+    } else if (draggedElement.id === 'ship3') {
+        return [index - 10, index, index + 10, index + 20]
+    } else if (draggedElement.id === 'ship4') {
+        return [index - 10, index, index + 10]
+    }
+}
+
+function getGridList(target) {
+    if (target.parentNode.classList.contains('first-grid')) {
+        return $$('.first-grid div');
+    } else {
+        return $$('.second-grid div');
+    }
 }
 
 export function handleDrop(event) {

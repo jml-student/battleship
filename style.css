@@ -52,6 +52,9 @@ body {
 
 .cell {
     border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .ships {
@@ -66,4 +69,13 @@ body {
     }
 }
 
+.cell-img {
+    height: var(--height);
+    cursor: move;
+    z-index: 1000;
+}
+
+.drag-preview {
+    background-color: gray;
+}
 
