@@ -79,7 +79,7 @@ export function handleDragOver(event) {
         return
     }
     cellsIndex.forEach((cell) => {
-        gridList[cell].style.backgroundColor = 'lightslategray'
+        gridList[cell].style.backgroundColor = 'rgb(0, 74, 148)'
     })
 }
 
@@ -90,7 +90,7 @@ export function handleDragLeave(event) {
     let cellsIndex = getCellsIndex(index)
     cellsIndex.forEach((cell) => {
         if (cell >= 0 && cell <= 99) {
-            gridList[cell].style.backgroundColor = 'white'
+            gridList[cell].style.backgroundColor = 'rgb(0, 128, 255)'
         }
     })
     

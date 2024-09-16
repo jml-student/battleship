@@ -64,8 +64,8 @@ export function createGrid(firstPlayer, secondPlayer) {
         firstCell.classList = 'cell'
         secondCell.classList = 'cell'
 
-        firstCell.style.backgroundColor = 'white'
-        secondCell.style.backgroundColor = 'white'
+        firstCell.style.backgroundColor = 'rgb(0, 128, 255)'
+        secondCell.style.backgroundColor = 'rgb(0, 128, 255)'
 
         firstCell.dataset.index = i;
         secondCell.dataset.index = i;

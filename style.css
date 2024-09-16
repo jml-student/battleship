@@ -99,6 +99,6 @@ body {
 .fix-position {
     position: relative;
     top: 20px;
-    /*color: lightslategray;*/
+    color: rgb(0, 74, 148);
 }
 
