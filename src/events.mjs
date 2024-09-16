@@ -65,30 +65,32 @@ export function handleCellClick(turn, attackedPlayer, cellIndex) {
 let draggedElement = null
 
 function handleDragStart(event) {
-    event.dataTransfer.setData('text/plain', '');
+    event.dataTransfer.setData('text/plain', '')
     draggedElement = event.target
 }
 
 export function handleDragOver(event) {
     event.preventDefault()
-    let index = event.target.dataset.index
+    let index = parseInt(event.target.dataset.index)
     let gridList = getGridList(event.target)
     let cellsIndex = getCellsIndex(index)
+    const invalidIndex = cellsIndex.some(cell => cell < 0 || cell > 99)
+    if (invalidIndex) {
+        return
+    }
     cellsIndex.forEach((cell) => {
-        if (cell >= 0 && cell <= 99) {
-            gridList[cell].classList.add('drag-preview')
-        }
+        gridList[cell].style.backgroundColor = 'lightslategray'
     })
 }
 
 export function handleDragLeave(event) {
     event.preventDefault()
-    let index = event.target.dataset.index
+    let index = parseInt(event.target.dataset.index)
     let gridList = getGridList(event.target)
     let cellsIndex = getCellsIndex(index)
     cellsIndex.forEach((cell) => {
         if (cell >= 0 && cell <= 99) {
-            gridList[cell].classList.remove('drag-preview')
+            gridList[cell].style.backgroundColor = 'white'
         }
     })
     
@@ -112,19 +114,27 @@ function getCellsIndex(index) {
 
 function getGridList(target) {
     if (target.parentNode.classList.contains('first-grid')) {
-        return $$('.first-grid div');
+        return $$('.first-grid div')
     } else {
-        return $$('.second-grid div');
+        return $$('.second-grid div')
     }
 }
 
 export function handleDrop(event) {
     event.preventDefault()
-
+    let index = parseInt(event.target.dataset.index)
+    let cellsIndex = getCellsIndex(index)
+    const invalidIndex = cellsIndex.some(cell => cell < 0 || cell > 99)
+    if (invalidIndex) {
+        return
+    }
     if (draggedElement) {
         let clonedImg = draggedElement.cloneNode(true)
         clonedImg.classList = 'cell-img'
-        event.target.appendChild(clonedImg);
-        draggedElement = null;
+        if (draggedElement.id === 'ship1' || draggedElement.id === 'ship3') {
+            clonedImg.classList.add('fix-position')
+        }
+        event.target.appendChild(clonedImg)
+        draggedElement = null
     }
 }

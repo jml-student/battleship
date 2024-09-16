@@ -6,29 +6,22 @@
         <title>Battleship</title>
         <link rel="stylesheet" href="./style.css" />
     </head>
-    <dialog class="choose-vs">
-        <div class="player-vs-player">
-            <!-- <svg></svg> -->
-            Player vs Player
-        </div>
-        <div class="player-vs-computer">
-            <!-- <svg></svg> -->
-            Player vs Computer
-        </div>
-    </dialog>
     <body>
-        <div class="container">
-            <div class="grids">
-                <div class="title"></div>
-                <div class="first-container">
-                    <div class="first-grid"></div>
-                    <div class="first-player"></div>
+        <dialog class="init-dialog">
+            <div class="dialog-container">
+                <div class="player-vs-player">
+                    <!-- <svg></svg> -->
+                    Player vs Player
                 </div>
-                <div class="second-container">
-                    <div class="second-grid"></div>
-                    <div class="second-player"></div>
+                <div class="player-vs-computer">
+                    <!-- <svg></svg> -->
+                    Player vs Computer
                 </div>
             </div>
+        </dialog>
+        <div class="container">
+            <div class="title"></div>
+            <div class="grids"></div>
             <div class="ships">
                 <img src="./img/ship1.png" id="ship1" alt="ship1" style="--height: var(--ship1-height)" draggable="true">
                 <img src="./img/ship2.png" id="ship2" alt="ship2" style="--height: var(--ship2-height)" draggable="true">

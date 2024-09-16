@@ -19,20 +19,43 @@ export function $$(el) {
 }
 
 export function showDialog() {
-    const dialog = $('.choose-vs')
+    const dialog = $('.init-dialog')
     dialog.showModal()
     dialog.style.display = 'block'
 }
 
 export function hideDialog() {
-    const dialog = $('.choose-vs')
+    const dialog = $('.init-dialog')
     dialog.close()
     dialog.style.display = 'none'
 }
 
 export function createGrid(firstPlayer, secondPlayer) {
-    const firstGrid = $('.first-grid')
-    const secondGrid = $('.second-grid')
+    const grids = $('.grids')
+    grids.innerHTML = ''
+    const title = $('.title')
+    title.textContent = ''
+    const firstContainer = document.createElement('div')
+    firstContainer.classList = 'first-container'
+    const firstGrid = document.createElement('div')
+    firstGrid.classList = 'first-grid'
+    const firstPlayerCont = document.createElement('div')
+    firstPlayerCont.classList = 'first-player'
+    const secondContainer = document.createElement('div')
+    secondContainer.classList = 'second-container'
+    const secondGrid = document.createElement('div')
+    secondGrid.classList = 'second-grid'
+    const secondPlayerCont = document.createElement('div')
+    secondPlayerCont.classList = 'second-player'
+
+    firstContainer.appendChild(firstGrid)
+    firstContainer.appendChild(firstPlayerCont)
+    secondContainer.appendChild(secondGrid)
+    secondContainer.appendChild(secondPlayerCont)
+    grids.appendChild(firstContainer)
+    grids.appendChild(secondContainer)
+
+
 
     for (let i = 0; i < 100; i++) {
         const firstCell = document.createElement('div')
@@ -103,6 +126,6 @@ export function endGame(gameState) {
             title.textContent = 'Computer Wins!'
         }
     }
-    setTimeout(init, 2000)
+    setTimeout(showDialog, 2000)
 }
 
