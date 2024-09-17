@@ -47,11 +47,11 @@ body {
     border-radius: 15px;
 }
 
-/*.player-vs-computer {
-    background-color: green;
-    height: 150px;
-    width: 150px;
-}*/
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 .grids {
     padding: 20px 20px;
@@ -82,9 +82,10 @@ body {
 
 .ships-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 200px;
+    width: 100%;
 }
 
 .ships {
@@ -92,7 +93,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 200px;
+    margin-bottom: 50px;
+    width: 100%;
 
     & img {
         height: var(--height);
@@ -106,10 +108,14 @@ body {
     z-index: 1000;
 }
 
-.fix-position {
+.fix-vertical-position {
     position: relative;
     top: 20px;
-    color: rgb(0, 74, 148);
+}
+
+.fix-horizontal-position {
+    position: relative;
+    right: 20px;
 }
 
 .direction {
@@ -117,10 +123,6 @@ body {
     width: 150px;
     padding: 10px;
     margin-left: 20px;
-}
-
-.column {
-    flex-direction: column;
 }
 
 .rotate {

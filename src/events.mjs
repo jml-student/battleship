@@ -106,22 +106,36 @@ function handleDragEnd(event) {
 export function handleDrop(event) {
     event.preventDefault()
     let index = parseInt(event.target.dataset.index)
+    let gridList = getGridList(event.target)
     let cellsIndex = getCellsIndex(index)
-    const invalidIndex = cellsIndex.some(cell => cell < 0 || cell > 99)
+    let player = getPlayer(event)
+    const invalidIndex = cellsIndex.some(cell => cell < 0 || cell > 99 || player.gameboard.grid[cell] !== null)
     if (invalidIndex) {
+        cellsIndex.forEach((cell) => {
+            if (player.gameboard.grid[cell] === null) {
+                gridList[cell].style.backgroundColor = 'var(--light-blue)'
+            }
+        })
         return
     }
     if (draggedElement) {
         let clonedImg = draggedElement.cloneNode(true)
         clonedImg.classList = 'cell-img'
-        if (draggedElement.id === 'ship1' || draggedElement.id === 'ship3') {
-            clonedImg.classList.add('fix-position')
+        if (gameState.direction === 'vertical') {
+            if (draggedElement.id === 'ship1' || draggedElement.id === 'ship3') {
+                clonedImg.classList.add('fix-vertical-position')
+            }
+        } else if (gameState.direction === 'horizontal') {
+            if (draggedElement.id === 'ship1' || draggedElement.id === 'ship3') {
+                clonedImg.classList.add('fix-horizontal-position')
+            }
+            clonedImg.classList.add('rotate')
+            clonedImg.style.marginLeft = ''
         }
         event.target.appendChild(clonedImg)
-        let player = getPlayer(event)
         let length = getLength()
         player.gameboard.placeShip(index, gameState.direction, length)
-        console.log(player.gameboard)
+        console.log(player.gameboard.grid)
         draggedElement = null
     }
 }
@@ -155,16 +169,18 @@ function handleChangeDirection() {
     const ships = $('.ships')
     const shipsImg = $$('.ships img')
     if (gameState.direction  === 'horizontal') {
-        ships.classList.add('column')
-        ships.style.justifyContent = 'flex-start'
+        ships.style.justifyContent = 'space-around'
+        let margin = 30
         shipsImg.forEach((ship) => {
             ship.classList.add('rotate')
+            ship.style.marginLeft = `${margin}px`
+            margin = margin - 10
         })
     } else if (gameState.direction === 'vertical') {
-        ships.classList.remove('column')
         ships.style.justifyContent = 'center'
         shipsImg.forEach((ship) => {
             ship.classList.remove('rotate')
+            ship.style.marginLeft = ''
         })
     }
 }

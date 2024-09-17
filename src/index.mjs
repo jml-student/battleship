@@ -36,11 +36,11 @@ class Gameboard {
     placeShip(index, direction, length) {
         const ship = new Ship(length, direction)
         this.ships.push(ship)
-        this.grid[index] = ship
         let cells = getCellsIndex(index)
         cells.forEach((cell) => {
             this.grid[cell] = index
         })
+        this.grid[index] = ship
     }
 
     receiveAttack(arg1, arg2 = null) {
@@ -72,11 +72,13 @@ class Gameboard {
 
     checkAllSunk() {
         let bool = true
-        this.ships.forEach((ship) => {
-            if (!ship.sunk) {
-                bool = false
-            }
-        })
+        if (this.ships.length > 0) {
+            this.ships.forEach((ship) => {
+                if (!ship.sunk) {
+                    bool = false
+                }
+            })
+        }
         if (bool) {
             this.allSunk = true
         }
