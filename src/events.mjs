@@ -74,14 +74,24 @@ function handleDragStart(event) {
 export function handleDragOver(event) {
     event.preventDefault()
     let index = parseInt(event.target.dataset.index)
+    let player = getPlayer(event)
     let gridList = getGridList(event.target)
     let cellsIndex = getCellsIndex(index)
-    const invalidIndex = cellsIndex.some(cell => cell < 0 || cell > 99)
-    if (invalidIndex) {
+    let invalidIndex = false
+    for (let i = 0; i < cellsIndex.length - 1; i++) {
+        let current = cellsIndex[i]
+        let next = cellsIndex[i + 1]
+        if ((current % 10 === 9 && next % 10 === 0) || (current % 10 === 0 && next % 10 === 9)) {
+            invalidIndex = true
+            break
+        }
+    }
+    const findInvalids = cellsIndex.some(cell => cell < 0 || cell > 99 || player.gameboard.grid[cell] !== null)
+    if (invalidIndex ||findInvalids) {
         return
     }
-    cellsIndex.forEach((cell) => {
-        gridList[cell].style.backgroundColor = 'var(--dark-blue)'
+    cellsIndex.forEach((c) => {
+        gridList[c].style.backgroundColor = 'var(--dark-blue)'
     })
 }
 
@@ -109,8 +119,17 @@ export function handleDrop(event) {
     let gridList = getGridList(event.target)
     let cellsIndex = getCellsIndex(index)
     let player = getPlayer(event)
-    const invalidIndex = cellsIndex.some(cell => cell < 0 || cell > 99 || player.gameboard.grid[cell] !== null)
-    if (invalidIndex) {
+    let invalidIndex = false
+    for (let i = 0; i < cellsIndex.length - 1; i++) {
+        let current = cellsIndex[i]
+        let next = cellsIndex[i + 1]
+        if ((current % 10 === 9 && next % 10 === 0) || (current % 10 === 0 && next % 10 === 9)) {
+            invalidIndex = true
+            break
+        }
+    }
+    const findInvalids = cellsIndex.some(cell => cell < 0 || cell > 99 || player.gameboard.grid[cell] !== null)
+    if (invalidIndex || findInvalids) {
         cellsIndex.forEach((cell) => {
             if (player.gameboard.grid[cell] === null) {
                 gridList[cell].style.backgroundColor = 'var(--light-blue)'
@@ -135,7 +154,6 @@ export function handleDrop(event) {
         event.target.appendChild(clonedImg)
         let length = getLength()
         player.gameboard.placeShip(index, gameState.direction, length)
-        console.log(player.gameboard.grid)
         draggedElement = null
     }
 }
