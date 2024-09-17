@@ -4,6 +4,8 @@
     --ship2-height: calc(var(--ship-height) * 5);
     --ship3-height: calc(var(--ship-height) * 4);
     --ship4-height: calc(var(--ship-height) * 3);
+    --light-blue: rgb(0, 128, 255);
+    --dark-blue: rgb(0, 74, 148);
 
 }
 
@@ -78,11 +80,19 @@ body {
     padding-left: 5px;
 }
 
+.ships-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+}
+
 .ships {
     background-color: rgb(247, 247, 247);
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 200px;
 
     & img {
         height: var(--height);
@@ -100,5 +110,20 @@ body {
     position: relative;
     top: 20px;
     color: rgb(0, 74, 148);
+}
+
+.direction {
+    height: 50px;
+    width: 150px;
+    padding: 10px;
+    margin-left: 20px;
+}
+
+.column {
+    flex-direction: column;
+}
+
+.rotate {
+    transform: rotate(90deg);
 }
 

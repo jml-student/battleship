@@ -1,13 +1,19 @@
 import { changeCellBg } from "./dom.mjs"
+import { getCellsIndex } from "./events.mjs"
 
 export class GameState {
     constructor() {
         this.players = []
         this.currentTurn = 'first'
+        this.direction = 'vertical'
     }
 
     switchTurn() {
         this.currentTurn = this.currentTurn === 'first' ? 'second' : 'first'
+    }
+
+    switchDirection() {
+        this.direction = this.direction === 'vertical' ? 'horizontal' : 'vertical'
     }
 }
 
@@ -27,20 +33,14 @@ class Gameboard {
         this.allSunk = false
     }
 
-    placeShip(letter, number, direction, length) {
+    placeShip(index, direction, length) {
         const ship = new Ship(length, direction)
         this.ships.push(ship)
-        const index = getIndex(letter, number)
         this.grid[index] = ship
-        if (direction === 'horizontal') {
-            for (let i = 1; i < length; i++) {
-                this.grid[index + i] = index
-            }
-        } else if (direction === 'vertical') {
-            for (let i = 1; i < length; i++) {
-                this.grid[index + i * 10] = index
-            }
-        }
+        let cells = getCellsIndex(index)
+        cells.forEach((cell) => {
+            this.grid[cell] = index
+        })
     }
 
     receiveAttack(arg1, arg2 = null) {

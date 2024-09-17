@@ -33,6 +33,8 @@ export function addShipListeners() {
     ships.forEach((ship) => {
         ship.addEventListener('dragend', handleDragEnd)
     })
+    const directionButton = $('.direction')
+    directionButton.addEventListener('click', handleChangeDirection)
 }
 
 export function handleCellClick(turn, attackedPlayer, cellIndex) {
@@ -79,7 +81,7 @@ export function handleDragOver(event) {
         return
     }
     cellsIndex.forEach((cell) => {
-        gridList[cell].style.backgroundColor = 'rgb(0, 74, 148)'
+        gridList[cell].style.backgroundColor = 'var(--dark-blue)'
     })
 }
 
@@ -88,9 +90,10 @@ export function handleDragLeave(event) {
     let index = parseInt(event.target.dataset.index)
     let gridList = getGridList(event.target)
     let cellsIndex = getCellsIndex(index)
+    let player = getPlayer(event)
     cellsIndex.forEach((cell) => {
-        if (cell >= 0 && cell <= 99) {
-            gridList[cell].style.backgroundColor = 'rgb(0, 128, 255)'
+        if (cell >= 0 && cell <= 99 && player.gameboard.grid[cell] === null) {
+            gridList[cell].style.backgroundColor = 'var(--light-blue)'
         }
     })
     
@@ -98,26 +101,6 @@ export function handleDragLeave(event) {
 
 function handleDragEnd(event) {
     draggedElement = null
-}
-
-function getCellsIndex(index) {
-    if (draggedElement.id === 'ship1') {
-        return [index - 20, index - 10, index, index + 10, index + 20, index + 30]
-    } else if (draggedElement.id === 'ship2') {
-        return [index - 20, index - 10, index, index + 10, index + 20]
-    } else if (draggedElement.id === 'ship3') {
-        return [index - 10, index, index + 10, index + 20]
-    } else if (draggedElement.id === 'ship4') {
-        return [index - 10, index, index + 10]
-    }
-}
-
-function getGridList(target) {
-    if (target.parentNode.classList.contains('first-grid')) {
-        return $$('.first-grid div')
-    } else {
-        return $$('.second-grid div')
-    }
 }
 
 export function handleDrop(event) {
@@ -135,6 +118,82 @@ export function handleDrop(event) {
             clonedImg.classList.add('fix-position')
         }
         event.target.appendChild(clonedImg)
+        let player = getPlayer(event)
+        let length = getLength()
+        player.gameboard.placeShip(index, gameState.direction, length)
+        console.log(player.gameboard)
         draggedElement = null
     }
 }
+
+export function getCellsIndex(index) {
+    if (gameState.direction === 'vertical') {
+        if (draggedElement.id === 'ship1') {
+            return [index - 20, index - 10, index, index + 10, index + 20, index + 30]
+        } else if (draggedElement.id === 'ship2') {
+            return [index - 20, index - 10, index, index + 10, index + 20]
+        } else if (draggedElement.id === 'ship3') {
+            return [index - 10, index, index + 10, index + 20]
+        } else if (draggedElement.id === 'ship4') {
+            return [index - 10, index, index + 10]
+        }
+    } else if (gameState.direction === 'horizontal') {
+        if (draggedElement.id === 'ship1') {
+            return [index - 3, index - 2, index - 1, index, index + 1, index + 2]
+        } else if (draggedElement.id === 'ship2') {
+            return [index - 2, index - 1, index, index + 1, index + 2]
+        } else if (draggedElement.id === 'ship3') {
+            return [index - 2, index - 1, index , index + 1]
+        } else if (draggedElement.id === 'ship4') {
+            return [index - 1, index, index + 1]
+        }
+    }
+}
+
+function handleChangeDirection() {
+    gameState.switchDirection()
+    const ships = $('.ships')
+    const shipsImg = $$('.ships img')
+    if (gameState.direction  === 'horizontal') {
+        ships.classList.add('column')
+        ships.style.justifyContent = 'flex-start'
+        shipsImg.forEach((ship) => {
+            ship.classList.add('rotate')
+        })
+    } else if (gameState.direction === 'vertical') {
+        ships.classList.remove('column')
+        ships.style.justifyContent = 'center'
+        shipsImg.forEach((ship) => {
+            ship.classList.remove('rotate')
+        })
+    }
+}
+
+function getGridList(target) {
+    if (target.parentNode.classList.contains('first-grid')) {
+        return $$('.first-grid div')
+    } else {
+        return $$('.second-grid div')
+    }
+}
+
+function getPlayer(event) {
+    if (event.target.parentNode.classList.contains('first-grid')) {
+        return gameState.players[0]
+    } else {
+        return gameState.players[1]
+    }
+}
+
+function getLength() {
+    if (draggedElement.id === 'ship1') {
+        return 6
+    } else if (draggedElement.id === 'ship2') {
+        return 5
+    } else if (draggedElement.id === 'ship3') {
+        return 4 
+    } else if (draggedElement.id === 'ship4') {
+        return 3
+    }
+}
+
