@@ -37,27 +37,23 @@ export function addShipListeners() {
     directionButton.addEventListener('click', handleChangeDirection)
 }
 
-export function handleCellClick(turn, attackedPlayer, cellIndex) {
+export function handleCellClick(turn, attackedPlayer, event) {
+    let cellIndex = parseInt(event.target.dataset.index)
+    const firstGridList = $$('.first-grid > div')
+    const secondGridList = $$('.second-grid > div')
     if (turn !== gameState.currentTurn) {
         console.log('It is not your turn.')
         return
     }
-
-    if (attackedPlayer.gameboard.shot.includes(cellIndex)) {
+    if (attackedPlayer.gameboard.shot.includes(cellIndex) || attackedPlayer.gameboard.ships.length < 1) {
         return
     }
-    
-    const firstGridList = $$('.first-grid > div')
-    const secondGridList = $$('.second-grid > div')
-
     attackedPlayer.gameboard.receiveAttack(cellIndex)
     const gridList = gameState.currentTurn === 'second' ? firstGridList : secondGridList
     changeCellBg(gridList, cellIndex)
-
     if (attackedPlayer.gameboard.allSunk === true) {
         endGame(gameState)
     }
-
     gameState.switchTurn()
     if (gameState.currentTurn === 'second' && gameState.players[1].isReal === false) {
         setTimeout(computerPlay, 500, gameState, firstGridList)
@@ -81,7 +77,7 @@ export function handleDragOver(event) {
     for (let i = 0; i < cellsIndex.length - 1; i++) {
         let current = cellsIndex[i]
         let next = cellsIndex[i + 1]
-        if ((current % 10 === 9 && next % 10 === 0) || (current % 10 === 0 && next % 10 === 9)) {
+        if (current % 10 === 9 && next % 10 === 0) {
             invalidIndex = true
             break
         }
@@ -90,8 +86,8 @@ export function handleDragOver(event) {
     if (invalidIndex ||findInvalids) {
         return
     }
-    cellsIndex.forEach((c) => {
-        gridList[c].style.backgroundColor = 'var(--dark-blue)'
+    cellsIndex.forEach((cell) => {
+        gridList[cell].style.backgroundColor = 'var(--dark-blue)'
     })
 }
 
@@ -123,7 +119,7 @@ export function handleDrop(event) {
     for (let i = 0; i < cellsIndex.length - 1; i++) {
         let current = cellsIndex[i]
         let next = cellsIndex[i + 1]
-        if ((current % 10 === 9 && next % 10 === 0) || (current % 10 === 0 && next % 10 === 9)) {
+        if (current % 10 === 9 && next % 10 === 0) {
             invalidIndex = true
             break
         }

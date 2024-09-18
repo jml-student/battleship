@@ -64,14 +64,14 @@ export function createGrid(firstPlayer, secondPlayer) {
         firstCell.classList = 'cell'
         secondCell.classList = 'cell'
 
-        firstCell.style.backgroundColor = 'rgb(0, 128, 255)'
-        secondCell.style.backgroundColor = 'rgb(0, 128, 255)'
+        firstCell.style.backgroundColor = 'var(--light-blue)'
+        secondCell.style.backgroundColor = 'var(--light-blue)'
 
-        firstCell.dataset.index = i;
-        secondCell.dataset.index = i;
+        firstCell.dataset.index = i
+        secondCell.dataset.index = i
 
-        firstCell.addEventListener('click', () => handleCellClick('second', firstPlayer, i))
-        secondCell.addEventListener('click', () => handleCellClick('first', secondPlayer, i))
+        firstCell.addEventListener('click', (event) => handleCellClick('second', firstPlayer, event))
+        secondCell.addEventListener('click', (event) => handleCellClick('first', secondPlayer, event))
 
         firstCell.addEventListener('dragover', handleDragOver)
         secondCell.addEventListener('dragover', handleDragOver)
@@ -108,9 +108,10 @@ export function displayGrid(firstPlayer, secondPlayer) {
 }
 
 export function changeCellBg(gridList, index) {
-    if (gridList[index].style.backgroundColor === 'blue') {
-        gridList[index].style.backgroundColor = 'red'
-    } else if (gridList[index].style.backgroundColor === 'white') {
+    if (gridList[index].style.backgroundColor === 'var(--dark-blue)') {
+        gridList[index].style.backgroundColor = 'var(--red)'
+    }
+    if (gridList[index].style.backgroundColor === 'var(--light-blue)') {
         gridList[index].style.backgroundColor = 'gray'
     }
 }
