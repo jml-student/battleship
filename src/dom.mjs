@@ -175,8 +175,12 @@ export function applyIconShadow() {
     if (gameState.currentTurn === 'first') {
         firstIcon.style.boxShadow = '0px 0px 5px 3px rgb(185, 185, 185)'
         firstIcon.style.border = '3px solid var(--black)'
+        secondIcon.style.boxShadow = ''
+        secondIcon.style.border = ''
     } else {
         secondIcon.style.boxShadow = '0px 0px 5px 3px rgb(185, 185, 185)'
         secondIcon.style.border = '3px solid var(--black)'
+        firstIcon.style.boxShadow = ''
+        firstIcon.style.border = ''
     }
 }

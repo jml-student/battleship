@@ -71,6 +71,7 @@ export function handleCellClick(turn, attackedPlayer, event) {
     }
 
     gameState.switchTurn()
+    applyIconShadow()
 
     if (gameState.currentTurn === 'second' && gameState.players[1].isReal === false) {
         setTimeout(() => {
@@ -80,6 +81,7 @@ export function handleCellClick(turn, attackedPlayer, event) {
                 return
             }
             gameState.switchTurn()
+            applyIconShadow()
         }, 500)
     }
 
