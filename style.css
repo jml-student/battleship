@@ -7,6 +7,7 @@
     --light-blue: rgb(0, 128, 255);
     --dark-blue: rgb(0, 74, 148);
     --red: rgb(168, 0, 0);
+    --black: rgb(44, 44, 44);
 }
 
 *, ::before, ::after {
@@ -15,10 +16,11 @@
 }
 
 body {
-    display: flex;
+    /*display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 100vh;*/
+    padding: 20px;
     background-color: #f7f7f7;
 }
 
@@ -27,7 +29,7 @@ body {
     width: 500px;
     position: relative;
     top: 20%;
-    left: 36%;
+    left: 34%;
     border-radius: 15px;
     outline: none;
     border: none;
@@ -47,7 +49,42 @@ body {
     border-radius: 15px;
 }
 
+.logo {
+    font-size: 30px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 500;
+    color: var(--black);
+    margin-bottom: 20px;
+}
+
 .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.first-icon, .second-icon {
+    height: 200px;
+    width: 200px;
+    margin: 20px;
+    padding: 10px;
+    position: relative;
+    bottom: 150px;
+    border-radius: 15px;
+    background-color: #e7e7e7;
+}
+
+.title {
+    height: 30px;
+    margin-bottom: 5px;
+    background-color: rgb(236, 236, 236);
+    font-size: 24px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 500;
+    color: var(--dark-blue);
+}
+
+.game-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -55,7 +92,7 @@ body {
 
 .grids {
     padding: 20px 20px;
-    background-color: rgb(29, 29, 29);
+    background-color: var(--black);
     border-radius: 15px;
     display: flex;
     justify-content: center;
@@ -69,11 +106,11 @@ body {
     grid-template-columns: repeat(10,40px);
     grid-template-rows: repeat(10, 40px);
     margin: 20px;
-    border: 1px solid black;
+    border: 1px solid var(--black);
 }
 
 .cell {
-    border: 1px solid black;
+    border: 1px solid var(--black);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -93,7 +130,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 50px;
+    margin-top: 15px;
+    margin-bottom: 15px;
     width: 100%;
 
     & img {

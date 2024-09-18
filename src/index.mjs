@@ -1,5 +1,5 @@
-import { changeCellBg } from "./dom.mjs"
-import { getCellsIndex } from "./events.mjs"
+import { changeCellBg, gameState } from "./dom.mjs"
+import { draggedElement } from "./events.mjs"
 
 export class GameState {
     constructor() {
@@ -36,10 +36,13 @@ class Gameboard {
     placeShip(index, direction, length) {
         const ship = new Ship(length, direction)
         this.ships.push(ship)
+
         let cells = getCellsIndex(index)
+
         cells.forEach((cell) => {
             this.grid[cell] = index
         })
+    
         this.grid[index] = ship
     }
 
@@ -56,6 +59,7 @@ class Gameboard {
         if (!this.shot.includes(index)) {
             this.shot.push(index)
         }
+
         if (this.grid[index] !== null) {
             if (typeof this.grid[index] === 'number') {
                 ship = this.grid[this.grid[index]]
@@ -79,6 +83,7 @@ class Gameboard {
                 }
             })
         }
+        
         if (bool) {
             this.allSunk = true
         }
@@ -104,7 +109,43 @@ class Ship {
     }
 }
 
-export function computerPlay(gameState, gridList) {
+export function getLength() {
+    if (draggedElement.id === 'ship1') {
+        return 6
+    } else if (draggedElement.id === 'ship2') {
+        return 5
+    } else if (draggedElement.id === 'ship3') {
+        return 4 
+    } else if (draggedElement.id === 'ship4') {
+        return 3
+    }
+}
+
+export function getCellsIndex(index) {
+    if (gameState.direction === 'vertical') {
+        if (draggedElement.id === 'ship1') {
+            return [index - 20, index - 10, index, index + 10, index + 20, index + 30]
+        } else if (draggedElement.id === 'ship2') {
+            return [index - 20, index - 10, index, index + 10, index + 20]
+        } else if (draggedElement.id === 'ship3') {
+            return [index - 10, index, index + 10, index + 20]
+        } else if (draggedElement.id === 'ship4') {
+            return [index - 10, index, index + 10]
+        }
+    } else if (gameState.direction === 'horizontal') {
+        if (draggedElement.id === 'ship1') {
+            return [index - 3, index - 2, index - 1, index, index + 1, index + 2]
+        } else if (draggedElement.id === 'ship2') {
+            return [index - 2, index - 1, index, index + 1, index + 2]
+        } else if (draggedElement.id === 'ship3') {
+            return [index - 2, index - 1, index , index + 1]
+        } else if (draggedElement.id === 'ship4') {
+            return [index - 1, index, index + 1]
+        }
+    }
+}
+
+export function computerPlay(gridList) {
     let randomIndex
     do {
         randomIndex = Math.floor(Math.random() * 100);
@@ -112,7 +153,6 @@ export function computerPlay(gameState, gridList) {
 
     gameState.players[0].gameboard.receiveAttack(randomIndex)
     changeCellBg(gridList, randomIndex)
-    gameState.switchTurn()
 }
 
 function getIndex(letter, number) {
