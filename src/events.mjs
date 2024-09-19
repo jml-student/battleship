@@ -1,5 +1,5 @@
 import { Player, getCellsIndex, getLength, computerPlay } from './index.mjs'
-import { gameState, $, $$, hideDialog, createGrid, getGridList, getPlayer, changeCellBg, handleChangeDirection, endGame, applyIconShadow } from './dom.mjs'
+import { gameState, $, $$, hideDialog, createGrid, getGridList, getPlayer, changeCellBg, handleChangeDirection, endGame, applyIconShadow, displayTitle, addPlayerSvgs } from './dom.mjs'
 
 export let draggedElement = null
 
@@ -15,6 +15,7 @@ export function addDialogListeners() {
 
         hideDialog()
         createGrid(firstPlayer, secondPlayer)
+        addPlayerSvgs()
         applyIconShadow()
     })
 
@@ -27,6 +28,7 @@ export function addDialogListeners() {
 
         hideDialog()
         createGrid(firstPlayer, secondPlayer)
+        addPlayerSvgs()
         applyIconShadow()
     })
 }
@@ -53,7 +55,6 @@ export function handleCellClick(turn, attackedPlayer, event) {
     const secondGridList = $$('.second-grid > div')
 
     if (turn !== gameState.currentTurn) {
-        console.log('It is not your turn.')
         return
     }
     if (attackedPlayer.gameboard.shot.includes(cellIndex) || attackedPlayer.gameboard.ships.length < 1) {
@@ -72,6 +73,7 @@ export function handleCellClick(turn, attackedPlayer, event) {
 
     gameState.switchTurn()
     applyIconShadow()
+    displayTitle()
 
     if (gameState.currentTurn === 'second' && gameState.players[1].isReal === false) {
         setTimeout(() => {
@@ -82,6 +84,7 @@ export function handleCellClick(turn, attackedPlayer, event) {
             }
             gameState.switchTurn()
             applyIconShadow()
+            displayTitle()
         }, 1000)
     }
 
