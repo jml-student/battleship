@@ -42,7 +42,7 @@ export function addShipListeners() {
         ship.addEventListener('dragend', handleDragEnd)
     })
 
-    const directionButton = $('.direction')
+    const directionButton = $('.btn-direction')
     directionButton.addEventListener('click', handleChangeDirection)
 }
 
@@ -82,7 +82,7 @@ export function handleCellClick(turn, attackedPlayer, event) {
             }
             gameState.switchTurn()
             applyIconShadow()
-        }, 500)
+        }, 1000)
     }
 
 }
@@ -172,6 +172,7 @@ export function handleDrop(event) {
     if (draggedElement) {
         let clonedImg = draggedElement.cloneNode(true)
         clonedImg.classList = 'cell-img'
+        clonedImg.id = ''
 
         if (gameState.direction === 'vertical') {
             if (draggedElement.id === 'ship1' || draggedElement.id === 'ship3') {
@@ -181,7 +182,6 @@ export function handleDrop(event) {
             if (draggedElement.id === 'ship1' || draggedElement.id === 'ship3') {
                 clonedImg.classList.add('fix-horizontal-position')
             }
-            clonedImg.classList.add('rotate')
             clonedImg.style.marginLeft = ''
         }
 

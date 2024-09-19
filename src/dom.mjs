@@ -82,7 +82,9 @@ export function createGrid(firstPlayer, secondPlayer) {
         firstCell.dataset.index = i
         secondCell.dataset.index = i
 
-        firstCell.addEventListener('click', (event) => handleCellClick('second', firstPlayer, event))
+        if (secondPlayer.isReal) {
+            firstCell.addEventListener('click', (event) => handleCellClick('second', firstPlayer, event))
+        }
         secondCell.addEventListener('click', (event) => handleCellClick('first', secondPlayer, event))
 
         firstCell.addEventListener('dragover', handleDragOver)
@@ -125,27 +127,39 @@ export function changeCellBg(gridList, index) {
 }
 
 export function handleChangeDirection() {
+    const ships = $('.ships')
+    const allShips = $$('.ships img')
+    const ship1 = $('#ship1')
+    const ship2 = $('#ship2')
+    const ship3 = $('#ship3')
+    const ship4 = $('#ship4')
+
     gameState.switchDirection()
 
-    const ships = $('.ships')
-    const shipsImg = $$('.ships img')
-
     if (gameState.direction  === 'horizontal') {
-        ships.style.justifyContent = 'space-around'
+        ship1.src = './img/ship1.2.png'
+        ship2.src = './img/ship2.2.png'
+        ship3.src = './img/ship3.2.png'
+        ship4.src = './img/ship4.2.png'
 
-        let margin = 30
+        ships.style.flexDirection = 'column'
 
-        shipsImg.forEach((ship) => {
-            ship.classList.add('rotate')
-            ship.style.marginLeft = `${margin}px`
-            margin = margin - 10
+        allShips.forEach((ship) => {
+            ship.style.height = '50px'
+            ship.style.width = 'var(--height)'
         })
-    } else if (gameState.direction === 'vertical') {
-        ships.style.justifyContent = 'center'
 
-        shipsImg.forEach((ship) => {
-            ship.classList.remove('rotate')
-            ship.style.marginLeft = ''
+    } else if (gameState.direction === 'vertical') {
+        ship1.src = './img/ship1.png'
+        ship2.src = './img/ship2.png'
+        ship3.src = './img/ship3.png'
+        ship4.src = './img/ship4.png'
+
+        ships.style.flexDirection = ''
+
+        allShips.forEach((ship) => {
+            ship.style.height = 'var(--height)'
+            ship.style.width = ''
         })
     }
 }
@@ -162,6 +176,9 @@ export function endGame() {
             title.textContent = 'Computer Wins!'
         }
     }
+    if (gameState.direction === 'horizontal') {
+        handleChangeDirection()
+    }
     let newGameState = new GameState()
     setGamestate(newGameState)
     console.log(gameState)
@@ -173,14 +190,14 @@ export function applyIconShadow() {
     const secondIcon = $('.second-icon')
 
     if (gameState.currentTurn === 'first') {
-        firstIcon.style.boxShadow = '0px 0px 5px 3px rgb(185, 185, 185)'
-        firstIcon.style.border = '3px solid var(--black)'
-        secondIcon.style.boxShadow = ''
+        //firstIcon.style.boxShadow = '0px 0px 5px 3px rgb(185, 185, 185)'
+        firstIcon.style.border = '3px solid var(--dark-blue)'
+        //secondIcon.style.boxShadow = ''
         secondIcon.style.border = ''
     } else {
-        secondIcon.style.boxShadow = '0px 0px 5px 3px rgb(185, 185, 185)'
-        secondIcon.style.border = '3px solid var(--black)'
-        firstIcon.style.boxShadow = ''
+        //secondIcon.style.boxShadow = '0px 0px 5px 3px rgb(185, 185, 185)'
+        secondIcon.style.border = '3px solid var(--dark-blue)'
+        //firstIcon.style.boxShadow = ''
         firstIcon.style.border = ''
     }
 }
