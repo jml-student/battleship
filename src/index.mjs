@@ -46,15 +46,8 @@ class Gameboard {
         this.grid[index] = ship
     }
 
-    receiveAttack(arg1, arg2 = null) {
+    receiveAttack(index) {
         let ship
-        let index
-        
-        if (arg2 === null) {
-            index = arg1
-        } else {
-            index = getIndex(arg1, arg2)
-        }
         
         if (!this.shot.includes(index)) {
             this.shot.push(index)
@@ -171,9 +164,25 @@ function getCells(index, direction, length){
 
 export function computerPlay(gridList) {
     let randomIndex
-    do {
-        randomIndex = Math.floor(Math.random() * 100);
-    } while (gameState.players[0].gameboard.shot.includes(randomIndex))
+    const playerHits = gameState.players[0].gameboard.shot.length - gameState.players[0].gameboard.missed.length
+    const computerHits = gameState.players[1].gameboard.shot.length - gameState.players[1].gameboard.missed.length
+
+    if (playerHits + 1 >= computerHits) {
+        do {
+            randomIndex = Math.floor(Math.random() * 100);
+        } while (gameState.players[0].gameboard.shot.includes(randomIndex))
+    } else {
+        const shipCells = []
+
+        for (let i = 0; i < gameState.players[0].gameboard.grid.length; i++) {
+            if (gameState.players[0].gameboard.grid[i] !== null) {
+                shipCells.push(i)
+            }
+        }
+
+        let randomNum = Math.floor(Math.random() * shipCells.length)
+        randomIndex = shipCells[randomNum]
+    }
 
     gameState.players[0].gameboard.receiveAttack(randomIndex)
     changeCellBg(gridList, randomIndex)
@@ -187,7 +196,6 @@ export function placeComputerShips() {
         let cellsIndex = getCells(randomIndex, randomDirection, length)
         let invalidIndex = false
 
-        console.log(cellsIndex)
         const findInvalids = cellsIndex.some(cell => cell < 0 || cell > 99 || gameState.players[1].gameboard.grid[cell] !== null)
 
         for (let i = 0; i < cellsIndex.length - 1; i++) {
@@ -206,12 +214,4 @@ export function placeComputerShips() {
             length = length - 1
         }
     }
-    console.log(gameState)
-}
-
-function getIndex(letter, number) {
-    const rowIndex = letter.charCodeAt(0) - 'A'.charCodeAt(0)
-    const columnIndex = number - 1
-    const index = rowIndex * 10 + columnIndex
-    return index
 }

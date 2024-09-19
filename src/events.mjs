@@ -196,6 +196,7 @@ export function handleDrop(event) {
         let clonedImg = draggedElement.cloneNode(true)
         clonedImg.classList = 'cell-img'
         clonedImg.id = ''
+        clonedImg.draggable = false
 
         if (gameState.direction === 'vertical') {
             if (draggedElement.id === 'ship1' || draggedElement.id === 'ship3') {
