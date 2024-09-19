@@ -37,7 +37,7 @@ class Gameboard {
         const ship = new Ship(length, direction)
         this.ships.push(ship)
 
-        let cells = getCellsIndex(index)
+        let cells = getCells(index, direction, length)
 
         cells.forEach((cell) => {
             this.grid[cell] = index
@@ -145,14 +145,68 @@ export function getCellsIndex(index) {
     }
 }
 
+function getCells(index, direction, length){
+    if (direction === 'vertical') {
+        if (length === 6) {
+            return [index - 20, index - 10, index, index + 10, index + 20, index + 30]
+        } else if (length === 5) {
+            return [index - 20, index - 10, index, index + 10, index + 20]
+        } else if (length === 4) {
+            return [index - 10, index, index + 10, index + 20]
+        } else if (length === 3) {
+            return [index - 10, index, index + 10]
+        }
+    } else if (direction === 'horizontal') {
+        if (length === 6) {
+            return [index - 3, index - 2, index - 1, index, index + 1, index + 2]
+        } else if (length === 5) {
+            return [index - 2, index - 1, index, index + 1, index + 2]
+        } else if (length === 4) {
+            return [index - 2, index - 1, index , index + 1]
+        } else if (length === 3) {
+            return [index - 1, index, index + 1]
+        }
+    }
+}
+
 export function computerPlay(gridList) {
     let randomIndex
     do {
         randomIndex = Math.floor(Math.random() * 100);
-    } while (gameState.players[0].gameboard.shot.includes(randomIndex));
+    } while (gameState.players[0].gameboard.shot.includes(randomIndex))
 
     gameState.players[0].gameboard.receiveAttack(randomIndex)
     changeCellBg(gridList, randomIndex)
+}
+
+export function placeComputerShips() {
+    let length = 6
+    while (gameState.players[1].gameboard.ships.length < 4) {
+        let randomIndex = Math.floor(Math.random() * 100)
+        let randomDirection = Math.random() < 0.5 ? 'vertical' : 'horizontal'
+        let cellsIndex = getCells(randomIndex, randomDirection, length)
+        let invalidIndex = false
+
+        console.log(cellsIndex)
+        const findInvalids = cellsIndex.some(cell => cell < 0 || cell > 99 || gameState.players[1].gameboard.grid[cell] !== null)
+
+        for (let i = 0; i < cellsIndex.length - 1; i++) {
+            let current = cellsIndex[i]
+            let next = cellsIndex[i + 1]
+            if (current % 10 === 9 && next % 10 === 0) {
+                invalidIndex = true
+                break
+            }
+        }
+
+        if (invalidIndex || findInvalids) {
+            continue
+        } else {
+            gameState.players[1].gameboard.placeShip(randomIndex, randomDirection, length)
+            length = length - 1
+        }
+    }
+    console.log(gameState)
 }
 
 function getIndex(letter, number) {

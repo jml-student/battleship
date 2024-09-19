@@ -30,7 +30,7 @@ export function showDialog() {
     dialog.showModal()
     dialog.style.display = 'block'
 
-    title.textContent = 'Place the ships'
+    title.textContent = 'Place the four ships'
 }
 
 export function hideDialog() {
@@ -110,8 +110,16 @@ export function getGridList(target) {
     }
 }
 
-export function getPlayer(event) {
-    if (event.target.parentNode.classList.contains('first-grid')) {
+export function getGridId(target) {
+    if (target.parentNode.classList.contains('first-grid')) {
+        return 'first-grid'
+    } else {
+        return 'second-grid'
+    }
+}
+
+export function getPlayer() {
+    if (gameState.currentTurn === 'first') {
         return gameState.players[0]
     } else {
         return gameState.players[1]
@@ -119,11 +127,18 @@ export function getPlayer(event) {
 }
 
 export function changeCellBg(gridList, index) {
-    if (gridList[index].style.backgroundColor === 'var(--dark-blue)') {
-        gridList[index].style.backgroundColor = 'var(--red)'
-    }
-    if (gridList[index].style.backgroundColor === 'var(--light-blue)') {
-        gridList[index].style.backgroundColor = 'gray'
+    if (gameState.currentTurn === 'first') {
+        if (gameState.players[1].gameboard.grid[index] === null) {
+            gridList[index].style.backgroundColor = 'gray'
+        } else {
+            gridList[index].style.backgroundColor = 'var(--red)'
+        }
+    } else {
+        if (gameState.players[0].gameboard.grid[index] === null) {
+            gridList[index].style.backgroundColor = 'gray'
+        } else {
+            gridList[index].style.backgroundColor = 'var(--red)'
+        } 
     }
 }
 
