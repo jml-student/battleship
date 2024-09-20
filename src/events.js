@@ -21,7 +21,8 @@ import {
     applyIconShadow,
     displayTitle,
     addPlayerSvgs,
-    handleTrashButton
+    handleTrashButton,
+    handlePassDevice
 } from './dom.js'
 
 export let draggedElement = null
@@ -29,12 +30,15 @@ export let draggedElement = null
 export function addDialogListeners() {
     const playerVsPlayer = $('.player-vs-player')
     const playerVsComputer = $('.player-vs-computer')
+    const passButton = $('.btn-pass-device')
 
     playerVsPlayer.addEventListener('click', () => {
         const firstPlayer = new Player()
         const secondPlayer = new Player()
 
         gameState.players.push(firstPlayer, secondPlayer)
+
+        passButton.style.color = 'var(--light-black)'
 
         hideDialog()
         createGrid(firstPlayer, secondPlayer)
@@ -48,6 +52,8 @@ export function addDialogListeners() {
         secondPlayer.isReal = false
 
         gameState.players.push(firstPlayer, secondPlayer)
+
+        passButton.style.color = 'rgb(170, 170, 170)'
 
         hideDialog()
         createGrid(firstPlayer, secondPlayer)
@@ -66,12 +72,17 @@ export function addShipListeners() {
     ships.forEach((ship) => {
         ship.addEventListener('dragend', handleDragEnd)
     })
+}
 
+export function addButtonListeners() {
     const directionButton = $('.btn-direction')
     directionButton.addEventListener('click', handleChangeDirection)
 
     const trashButton = $('.btn-trash')
     trashButton.addEventListener('click', handleTrashButton)
+
+    const passButton = $('.btn-pass-device')
+    passButton.addEventListener('click', handlePassDevice)
 }
 
 export function handleCellClick(turn, attackedPlayer, event) {
@@ -79,10 +90,16 @@ export function handleCellClick(turn, attackedPlayer, event) {
 
     const firstGridList = $$('.first-grid > div')
     const secondGridList = $$('.second-grid > div')
+    const passButton = $('.btn-pass-device')
 
     if (turn !== gameState.currentTurn) {
         return
     }
+
+    if (passButton.textContent === 'Reveal') {
+        return
+    }
+
     if (attackedPlayer.gameboard.shot.includes(cellIndex)
         || gameState.players[0].gameboard.ships.length < 4
         || gameState.players[1].gameboard.ships.length < 4) {
@@ -126,12 +143,15 @@ function handleDragStart(event) {
 export function handleDragOver(event) {
     event.preventDefault()
 
+    const passButton = $('.btn-pass-device')
+
     let index = parseInt(event.target.dataset.index)
     let player = getPlayer()
     let gridList = getGridList(event.target)
     let gridId = getGridId(event.target)
     let cellsIndex = getCellsIndex(index)
     let invalidIndex = false
+    let invalidShip = false
 
     for (let i = 0; i < cellsIndex.length - 1; i++) {
         let current = cellsIndex[i]
@@ -142,9 +162,20 @@ export function handleDragOver(event) {
         }
     }
 
+    for (let j = 0; j < player.gameboard.ships.length; j++) {
+        if (player.gameboard.ships[j].length === cellsIndex.length) {
+            invalidShip = true
+            break
+        }
+    }
+
     const findInvalids = cellsIndex.some(cell => cell < 0 || cell > 99 || player.gameboard.grid[cell] !== null)
 
-    if (invalidIndex ||findInvalids) {
+    if (invalidIndex || invalidShip || findInvalids) {
+        return
+    }
+
+    if (passButton.textContent === 'Reveal') {
         return
     }
 
@@ -155,6 +186,7 @@ export function handleDragOver(event) {
     ) {
         return
     }
+
 
     cellsIndex.forEach((cell) => {
         gridList[cell].style.backgroundColor = 'var(--dark-blue)'
@@ -183,12 +215,15 @@ function handleDragEnd() {
 export function handleDrop(event) {
     event.preventDefault()
 
+    const passButton = $('.btn-pass-device')
+
     let index = parseInt(event.target.dataset.index)
     let gridList = getGridList(event.target)
     let gridId = getGridId(event.target)
     let cellsIndex = getCellsIndex(index)
     let player = getPlayer()
     let invalidIndex = false
+    let invalidShip = false
 
     for (let i = 0; i < cellsIndex.length - 1; i++) {
         let current = cellsIndex[i]
@@ -199,14 +234,25 @@ export function handleDrop(event) {
         }
     }
 
+    for (let j = 0; j < player.gameboard.ships.length; j++) {
+        if (player.gameboard.ships[j].length === cellsIndex.length) {
+            invalidShip = true
+            break
+        }
+    }
+
     const findInvalids = cellsIndex.some(cell => cell < 0 || cell > 99 || player.gameboard.grid[cell] !== null)
 
-    if (invalidIndex || findInvalids) {
+    if (invalidIndex || invalidShip || findInvalids) {
         cellsIndex.forEach((cell) => {
             if (player.gameboard.grid[cell] === null) {
                 gridList[cell].style.backgroundColor = 'var(--light-blue)'
             }
         })
+        return
+    }
+
+    if (passButton.textContent === 'Reveal') {
         return
     }
 

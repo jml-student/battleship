@@ -1,9 +1,18 @@
 import { GameState } from './index.js'
-import { addDialogListeners, addShipListeners, handleCellClick, handleDragOver, handleDragLeave, handleDrop } from './events.js'
+import {
+    addDialogListeners,
+    addShipListeners,
+    addButtonListeners,
+    handleCellClick,
+    handleDragOver,
+    handleDragLeave,
+    handleDrop
+} from './events.js'
 
 showDialog()
 addDialogListeners()
 addShipListeners()
+addButtonListeners()
 
 export let gameState = new GameState()
 
@@ -55,8 +64,8 @@ export function createGrid(firstPlayer, secondPlayer) {
     const firstGrid = document.createElement('div')
     firstGrid.classList = 'first-grid'
 
-    const firstPlayerCont = document.createElement('div')
-    firstPlayerCont.classList = 'first-player'
+    const firstScreen = document.createElement('div')
+    firstScreen.classList = 'screen'
 
     const secondContainer = document.createElement('div')
     secondContainer.classList = 'second-container'
@@ -64,14 +73,11 @@ export function createGrid(firstPlayer, secondPlayer) {
     const secondGrid = document.createElement('div')
     secondGrid.classList = 'second-grid'
 
-    const secondPlayerCont = document.createElement('div')
-    secondPlayerCont.classList = 'second-player'
+    const secondScreen = document.createElement('div')
+    secondScreen.classList = 'screen'
 
     firstContainer.appendChild(firstGrid)
-    firstContainer.appendChild(firstPlayerCont)
-
     secondContainer.appendChild(secondGrid)
-    secondContainer.appendChild(secondPlayerCont)
 
     grids.appendChild(firstContainer)
     grids.appendChild(secondContainer)
@@ -106,6 +112,9 @@ export function createGrid(firstPlayer, secondPlayer) {
         firstGrid.appendChild(firstCell)
         secondGrid.appendChild(secondCell)
     }
+
+    firstGrid.appendChild(firstScreen)
+    secondGrid.appendChild(secondScreen)
 }
 
 export function getGridList(target) {
@@ -223,6 +232,110 @@ export function handleTrashButton() {
         }
 
         gameState.players[1].gameboard.ships = []
+    }
+}
+
+export function handlePassDevice() {
+    const passButton = $('.btn-pass-device')
+    const screens = $$('.screen')
+    const firstGrid = $$('.first-grid div')
+    const firstGridImgs = $$('.first-grid div img')
+    const secondGrid = $$('.second-grid div')
+    const secondGridImgs = $$('.second-grid div img')
+
+    if (gameState.players[1].isReal === false) {
+        return
+    }
+
+    if (passButton.textContent === 'Pass Device') {
+        passButton.textContent = 'Reveal'
+
+        screens.forEach((screen) => {
+            screen.style.display = 'block'
+        })
+
+        if (gameState.currentTurn === 'second'){
+            firstGridImgs.forEach((img) => {
+                img.style.display = 'none'
+            })
+
+            for (let i = 0; i < firstGrid.length; i++) {
+                if (gameState.players[0].gameboard.shot.includes(i)) {
+                    if (gameState.players[0].gameboard.grid[i] === null) {
+                        firstGrid[i].style.backgroundColor = 'gray'
+                    } else {
+                        firstGrid[i].style.backgroundColor = 'var(--red)'
+                    }
+                } else {
+                    firstGrid[i].style.backgroundColor = 'var(--light-blue)'
+                }
+            }
+
+            secondGridImgs.forEach((img) => {
+                img.style.display = 'block'
+            })
+
+            for (let i = 0; i < secondGrid.length; i++) {
+                if (gameState.players[1].gameboard.shot.includes(i)) {
+                    if (gameState.players[1].gameboard.grid[i] === null) {
+                        secondGrid[i].style.backgroundColor = 'gray'
+                    } else {
+                        secondGrid[i].style.backgroundColor = 'var(--red)'
+                    }
+                } else {
+                    if (gameState.players[1].gameboard.grid[i] === null) {
+                        secondGrid[i].style.backgroundColor = 'var(--light-blue)'
+                    } else {
+                        secondGrid[i].style.backgroundColor = 'var(--dark-blue)'
+                    }
+                    
+                }
+            }
+
+        } else if (gameState.currentTurn === 'first') {
+            secondGridImgs.forEach((img) => {
+                img.style.display = 'none'
+            })
+
+            for (let i = 0; i < secondGrid.length; i++) {
+                if (gameState.players[1].gameboard.shot.includes(i)) {
+                    if (gameState.players[1].gameboard.grid[i] === null) {
+                        secondGrid[i].style.backgroundColor = 'gray'
+                    } else {
+                        secondGrid[i].style.backgroundColor = 'var(--red)'
+                    }
+                } else {
+                    secondGrid[i].style.backgroundColor = 'var(--light-blue)'
+                }
+            }
+
+            firstGridImgs.forEach((img) => {
+                img.style.display = 'block'
+            })
+
+            for (let i = 0; i < firstGrid.length; i++) {
+                if (gameState.players[0].gameboard.shot.includes(i)) {
+                    if (gameState.players[0].gameboard.grid[i] === null) {
+                        firstGrid[i].style.backgroundColor = 'gray'
+                    } else {
+                        firstGrid[i].style.backgroundColor = 'var(--red)'
+                    }
+                } else {
+                    if (gameState.players[0].gameboard.grid[i] === null) {
+                        firstGrid[i].style.backgroundColor = 'var(--light-blue)'
+                    } else {
+                        firstGrid[i].style.backgroundColor = 'var(--dark-blue)'
+                    }
+                    
+                }
+            }
+        }
+    } else if (passButton.textContent === 'Reveal') {
+        passButton.textContent = 'Pass Device'
+
+        screens.forEach((screen) => {
+            screen.style.display = 'none'
+        })
     }
 }
 
