@@ -25,10 +25,16 @@ export function $$(el) {
 
 export function showDialog() {
     const dialog = $('.init-dialog')
+    const grids = $('.grids')
+    const rect = grids.getBoundingClientRect()
+    const centerX = rect.left + (rect.width / 2)
+    const centerY = rect.top + (rect.height / 2)
     const title = $('.title')
 
     dialog.showModal()
     dialog.style.display = 'block'
+    dialog.style.left = `${centerX - (dialog.offsetWidth / 2)}px`
+    dialog.style.top = `${centerY - (dialog.offsetHeight / 2)}px`
 
     title.textContent = 'Place the four ships'
 }

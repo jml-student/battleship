@@ -169,13 +169,13 @@ export function computerPlay(gridList) {
 
     if (playerHits + 1 >= computerHits) {
         do {
-            randomIndex = Math.floor(Math.random() * 100);
+            randomIndex = Math.floor(Math.random() * 100)
         } while (gameState.players[0].gameboard.shot.includes(randomIndex))
     } else {
         const shipCells = []
 
         for (let i = 0; i < gameState.players[0].gameboard.grid.length; i++) {
-            if (gameState.players[0].gameboard.grid[i] !== null) {
+            if (gameState.players[0].gameboard.grid[i] !== null && !gameState.players[0].gameboard.shot.includes(i)) {
                 shipCells.push(i)
             }
         }
