@@ -1,5 +1,5 @@
-import { GameState } from './index.mjs'
-import { addDialogListeners, addShipListeners, handleCellClick, handleDragOver, handleDragLeave, handleDrop } from './events.mjs'
+import { GameState } from './index.js'
+import { addDialogListeners, addShipListeners, handleCellClick, handleDragOver, handleDragLeave, handleDrop } from './events.js'
 
 showDialog()
 addDialogListeners()

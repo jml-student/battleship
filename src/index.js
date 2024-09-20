@@ -1,5 +1,5 @@
-import { changeCellBg, gameState } from "./dom.mjs"
-import { draggedElement } from "./events.mjs"
+import { changeCellBg, gameState } from "./dom.js"
+import { draggedElement } from "./events.js"
 
 export class GameState {
     constructor() {
@@ -138,7 +138,7 @@ export function getCellsIndex(index) {
     }
 }
 
-function getCells(index, direction, length){
+export function getCells(index, direction, length){
     if (direction === 'vertical') {
         if (length === 6) {
             return [index - 20, index - 10, index, index + 10, index + 20, index + 30]

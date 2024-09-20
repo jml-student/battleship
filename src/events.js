@@ -1,5 +1,5 @@
-import { Player, getCellsIndex, getLength, computerPlay, placeComputerShips } from './index.mjs'
-import { gameState, $, $$, hideDialog, createGrid, getGridList, getGridId, getPlayer, changeCellBg, handleChangeDirection, endGame, applyIconShadow, displayTitle, addPlayerSvgs } from './dom.mjs'
+import { Player, getCellsIndex, getLength, computerPlay, placeComputerShips } from './index.js'
+import { gameState, $, $$, hideDialog, createGrid, getGridList, getGridId, getPlayer, changeCellBg, handleChangeDirection, endGame, applyIconShadow, displayTitle, addPlayerSvgs } from './dom.js'
 
 export let draggedElement = null
 
