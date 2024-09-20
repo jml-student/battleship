@@ -186,6 +186,46 @@ export function handleChangeDirection() {
     }
 }
 
+export function handleTrashButton() {
+    if (gameState.currentTurn === 'first') {
+
+        if (gameState.players[0].gameboard.ships.length === 4) {
+            return
+        }
+
+        const gridList = $$('.first-grid div')
+
+        gridList.forEach((cell) => {
+            cell.innerHTML = ''
+            cell.style.backgroundColor = 'var(--light-blue)'
+        })
+
+        for (let i = 0; i < gameState.players[0].gameboard.grid.length; i++) {
+            gameState.players[0].gameboard.grid[i] = null;
+        }
+
+        gameState.players[0].gameboard.ships = []
+    } else {
+
+        if (gameState.players[1].gameboard.ships.length === 4) {
+            return
+        }
+
+        const gridList = $$('.second-grid div')
+
+        gridList.forEach((cell) => {
+            cell.innerHTML = ''
+            cell.style.backgroundColor = 'var(--light-blue)'
+        })
+
+        for (let i = 0; i < gameState.players[1].gameboard.grid.length; i++) {
+            gameState.players[1].gameboard.grid[i] = null;
+        }
+
+        gameState.players[1].gameboard.ships = []
+    }
+}
+
 export function endGame() {
     const title = $('.title')
 

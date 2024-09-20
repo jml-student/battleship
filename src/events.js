@@ -1,5 +1,28 @@
-import { Player, getCellsIndex, getLength, computerPlay, placeComputerShips } from './index.js'
-import { gameState, $, $$, hideDialog, createGrid, getGridList, getGridId, getPlayer, changeCellBg, handleChangeDirection, endGame, applyIconShadow, displayTitle, addPlayerSvgs } from './dom.js'
+import { 
+    Player,
+    getCellsIndex,
+    getLength,
+    computerPlay,
+    placeComputerShips
+} from './index.js'
+
+import { 
+    gameState,
+    $,
+    $$,
+    hideDialog,
+    createGrid,
+    getGridList,
+    getGridId,
+    getPlayer,
+    changeCellBg,
+    handleChangeDirection,
+    endGame,
+    applyIconShadow,
+    displayTitle,
+    addPlayerSvgs,
+    handleTrashButton
+} from './dom.js'
 
 export let draggedElement = null
 
@@ -46,6 +69,9 @@ export function addShipListeners() {
 
     const directionButton = $('.btn-direction')
     directionButton.addEventListener('click', handleChangeDirection)
+
+    const trashButton = $('.btn-trash')
+    trashButton.addEventListener('click', handleTrashButton)
 }
 
 export function handleCellClick(turn, attackedPlayer, event) {

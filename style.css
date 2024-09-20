@@ -202,7 +202,7 @@ body {
     right: 20px;
 }
 
-.btn-direction {
+.btn-direction, .btn-trash {
     height: 60px;
     width: 60px;
     padding: 10px;
@@ -237,8 +237,10 @@ footer {
     color: rgb(219, 219, 219);
 }
 
-.pvp-svg:hover, .pvc-svg:hover, .btn-direction:hover {
-    /*box-shadow: 0px 0px 5px 3px rgb(184, 184, 184);*/
+.pvp-svg:hover,
+.pvc-svg:hover,
+.btn-direction:hover,
+.btn-trash:hover {
     box-shadow: #9b9b9b 0px 0px 8px 1px;
     color: var(--black);
 }
